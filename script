@@ -1,0 +1,57 @@
+const form = document.getElementById("formTarea");
+const input = document.getElementById("inputTarea");
+const lista = document.getElementById("listaTareas");
+const error = document.getElementById("error");
+
+// Array de objetos
+const tareas = [];
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const texto = input.value.trim();
+
+    // Validación
+    if (texto === "") {
+        error.textContent = "Por favor, ingresa una tarea.";
+        return;
+    }
+
+    error.textContent = "";
+
+    // Guardar en array de objetos
+    const tarea = {
+        id: Date.now(),
+        texto: texto,
+        completada: false
+    };
+
+    tareas.push(tarea);
+
+    renderizarTareas();
+
+    input.value = "";
+});
+
+function renderizarTareas() {
+    lista.innerHTML = "";
+
+    tareas.forEach((tarea) => {
+        const li = document.createElement("li");
+
+        li.textContent = tarea.texto;
+
+        if (tarea.completada) {
+            li.classList.add("completada");
+        }
+
+        li.addEventListener("click", () => {
+            tarea.completada = !tarea.completada;
+
+            // Uso de classList.toggle()
+            li.classList.toggle("completada");
+        });
+
+        lista.appendChild(li);
+    });
+}
